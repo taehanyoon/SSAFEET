@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafeet.model.dao.UserDao">
+
+    <!-- 모든 사용자 조회 -->
+    <select id="selectAll" resultType="User">
+        SELECT * FROM users;
+    </select>
+
+    <!-- 특정 사용자 조회 -->
+    <select id="selectOne" resultType="User" parameterType="int">
+        SELECT * FROM users
+        WHERE id = #{id};
+    </select>
+
+    <!-- 휴대폰 번호로 사용자 조회 -->
+    <select id="selectPhone" resultType="User" parameterType="String">
+        SELECT * FROM users
+        WHERE phone = #{phone};
+    </select>
+
+    <!-- 유저로 사용자 조회 -->
+    <select id="selectUser" resultType="User" parameterType="Map">
+        SELECT * FROM users
+        WHERE phone = #{phone} AND password = #{password};
+    </select>
+
+    <!-- 사용자 등록 -->
+    <insert id="insertUser" parameterType="User">
+        INSERT INTO users (id, phone, name, campus, password)
+        VALUES (#{id}, #{phone}, #{name}, #{campus}, #{password});
+    </insert>
+
+    <!-- 사용자 삭제 -->
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM users
+        WHERE id = #{id};
+    </delete>
+
+    <!-- 걸음 수 업데이트 -->
+    <update id="updateSteps" parameterType="Map">
+        UPDATE users
+        SET cummWalk = cummWalk + #{steps},
+            currWalk = currWalk + #{steps}
+        WHERE id = #{id};
+    </update>
+
+    <!-- 포인트 업데이트 -->
+    <update id="updatePoints" parameterType="Map">
+        UPDATE users
+        SET point = point + #{points}
+        WHERE id = #{id};
+    </update>
+
+    <!-- 걸음 수와 포인트 동시 업데이트 -->
+    <update id="updateStepsAndPoints" parameterType="Map">
+        UPDATE users
+        SET cummWalk = cummWalk + #{steps},
+            currWalk = currWalk + #{steps},
+            point = point + #{points}
+        WHERE id = #{id};
+    </update>
+
+    <!-- 목표 달성 상태 업데이트 -->
+    <update id="updateGoalStatus" parameterType="Map">
+        UPDATE users
+        SET goalAchieved = #{goalAchieved}
+        WHERE id = #{id};
+    </update>
+
+    <!-- 하루 걸음 수 초기화 -->
+    <update id="resetSteps" parameterType="int">
+        UPDATE users
+        SET currWalk = 0,
+            goalAchieved = false
+        WHERE id = #{id};
+    </update>
+    
+    <update id="updateProduct" parameterType="Map">
+    	UPDATE users
+    	SET product_id = #{productId}
+    	WHERE id = #{userId};
+    </update>
+
+</mapper>

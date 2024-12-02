@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafeet.model.dao.CouponDao">
+    <insert id="insertCoupon" parameterType="map">
+        INSERT INTO coupons (product_id, user_id)
+        VALUES (#{productId}, #{userId});
+    </insert>
+    <select id="selectAll" resultType="java.util.Map" parameterType="int">
+    	SELECT * FROM coupons LEFT JOIN products ON coupons.product_id = products.id
+    	WHERE user_id = #{userId} AND used_time IS NULL;
+    </select>
+    <update id="updateCoupon" parameterType="map">
+        UPDATE coupons
+        SET used_time = NOW()
+        WHERE product_id = #{productId} AND user_id = #{userId} AND redeem_time = DATE_ADD(#{redeemTime}, INTERVAL -9 HOUR);
+    </update>
+    <select id="selectPlaces" resultType="Place" parameterType="String">
+    	SELECT * FROM places
+    	WHERE campus = #{campus};
+    </select>
+    <select id="selectProducts" resultType="Product" parameterType="int">
+    	SELECT * FROM products
+    	WHERE place_id = #{id};
+    </select>
+</mapper>

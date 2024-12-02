@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafeet.model.dao.CourseDao">
+    <select id="selectCourseGps" resultType="Gps" parameterType="int">
+    	SELECT time, lat, lng FROM gps LEFT JOIN courses ON gps.user_id = courses.user_id
+    	WHERE courses.user_id = #{id} AND time BETWEEN (SELECT start_time from courses WHERE id = #{id}) AND (SELECT end_time from courses WHERE id = #{id})
+    	ORDER BY time ASC;
+    </select>
+</mapper>
